@@ -97,6 +97,8 @@ export default class MediaElement extends WebAudio {
 
         const prevMedia = container.querySelector(this.mediaType);
         if (prevMedia) {
+            media.volume = prevMedia.volume;
+            prevMedia.preload = 'none';
             container.removeChild(prevMedia);
         }
         container.appendChild(media);
