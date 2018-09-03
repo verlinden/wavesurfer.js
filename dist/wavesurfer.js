@@ -1,5 +1,5 @@
 /*!
- * wavesurfer.js 2.0.6 (Mon Sep 03 2018 11:57:13 GMT+0200 (Central European Summer Time))
+ * wavesurfer.js 2.0.6 (Mon Sep 03 2018 15:14:53 GMT+0200 (Central European Summer Time))
  * https://github.com/katspaugh/wavesurfer.js
  * @license BSD-3-Clause
  */
@@ -1464,6 +1464,8 @@ var MediaElement = function (_WebAudio) {
 
             var prevMedia = container.querySelector(this.mediaType);
             if (prevMedia) {
+                media.volume = prevMedia.volume;
+                prevMedia.preload = 'none';
                 container.removeChild(prevMedia);
             }
             container.appendChild(media);
