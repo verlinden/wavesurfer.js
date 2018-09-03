@@ -1216,11 +1216,40 @@ export default class WaveSurfer extends util.Observer {
             }
         }
 
-        switch (this.params.backend) {
-            case 'WebAudio':
-                return this.loadBuffer(url, peaks, duration);
-            case 'MediaElement':
-                return this.loadMediaElement(url, peaks, preload, duration);
+        if (typeof peaks == 'string') {
+            var xmlHttp = new XMLHttpRequest();
+
+            xmlHttp.onreadystatechange = () => {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    var response = JSON.parse(xmlHttp.responseText);
+
+                    switch (this.params.backend) {
+                        case 'WebAudio':
+                            return this.loadBuffer(
+                                url,
+                                response.data,
+                                duration
+                            );
+                        case 'MediaElement':
+                            return this.loadMediaElement(
+                                url,
+                                response.data,
+                                preload,
+                                duration
+                            );
+                    }
+                }
+            };
+
+            xmlHttp.open('GET', peaks, true);
+            xmlHttp.send(null);
+        } else {
+            switch (this.params.backend) {
+                case 'WebAudio':
+                    return this.loadBuffer(url, peaks, duration);
+                case 'MediaElement':
+                    return this.loadMediaElement(url, peaks, preload, duration);
+            }
         }
     }
 
